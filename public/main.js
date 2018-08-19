@@ -38,6 +38,7 @@ const WeatherChat = function () {
         $(".city-list").append(newHTML);
     }
     let postComment = function(cityID, commentText){
+        $('.city-list').empty();
         let city = _findCityById(cityID);
         city.addComment(commentText);
         render();
@@ -48,8 +49,9 @@ const WeatherChat = function () {
                 // tested console.log(cities[i])
                 return cities[i];
             }
-            return "ID Not found";
         }
+        // console.log(cities); tested
+        return "ID Not found";
     }
     return {
         fetch: fetch,
@@ -67,6 +69,6 @@ $('.city-list').on('click', '#button-get-comment' ,function(x){
     x.preventDefault();
     let cityID = $(this).closest('.card').find('.card-header').data().id;
     let commentText = $(this).closest('.input-group').find('#comment').val();
-    // console.log(commentText); tested
+    // console.log(commentText, cityID); tested
     app.postComment(cityID, commentText);
 });
