@@ -41,6 +41,9 @@
                             <div class="card">
                                     <div class="card-header" data-id="{{_id}}">
                                         {{_cityName}}
+                                        <button type="button" class="btn btn-danger btn-sm" data-id="{{_id}}">
+                                            <span class="glyphicon glyphicon-trash">Delete</span>  
+                                          </button>
                                     </div>
                                     <div class="card-body">
                                         <p class="card-text">{{_temp.tempC}} &#8451 / {{_temp.tempF}} &#8457 </p>

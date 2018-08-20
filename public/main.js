@@ -27,7 +27,6 @@ const WeatherChat = function () {
         cities.push(weatherbox);
         // tested console.log(cities);
         render();
-
     }
     let render = function(){
         $('.city-list').empty();
@@ -38,9 +37,15 @@ const WeatherChat = function () {
         $(".city-list").append(newHTML);
     }
     let postComment = function(cityID, commentText){
-        $('.city-list').empty();
+        // $('.city-list').empty();
         let city = _findCityById(cityID);
         city.addComment(commentText);
+        render();
+    }
+    let deleteCity = function(deleteID){
+        let index = _findDeleteIndex(deleteID);
+        cities.splice(index, 1);
+        // tested console.log(cities);
         render();
     }
     let _findCityById = function(cityID){
@@ -53,12 +58,27 @@ const WeatherChat = function () {
         // console.log(cities); tested
         return "ID Not found";
     }
+    let _findDeleteIndex = function(deleteID){
+        let index = 0;
+        for(let i = 0; i < cities.length; i++){
+            if(cities[i]._id===deleteID){
+                // tested console.log(cities[i])
+                index = i;
+                return index;
+            }
+        }
+        // console.log(cities); tested
+        return "ID Not found";
+    }
     return {
         fetch: fetch,
-        postComment: postComment
+        postComment: postComment,
+        render: render,
+        deleteCity: deleteCity
     }
 }
 const app = WeatherChat();
+app.render();
 $('#button-get-temp').on('click', function (x) {
     x.preventDefault();
     let citySearch = $(this).closest('.input-group').find('#city-name').val();
@@ -71,4 +91,10 @@ $('.city-list').on('click', '#button-get-comment' ,function(x){
     let commentText = $(this).closest('.input-group').find('#comment').val();
     // console.log(commentText, cityID); tested
     app.postComment(cityID, commentText);
+});
+$('.city-list').on('click', '.btn-danger' ,function(x){
+    x.preventDefault();
+    let deleteID = $(this).data().id;
+    // tested console.log(deleteID);
+    app.deleteCity(deleteID);
 });
