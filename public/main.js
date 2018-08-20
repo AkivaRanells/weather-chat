@@ -1,12 +1,19 @@
 
 import WeatherBox from './weatherbox.js';
+import Comments from './comment.js';
 
 const STORAGE_ID = 'weatherchat';
 const My_Api_Key = 'fbe4f3586edf4bbe93590218181908';
 const source = $('#city-template').html();
 const template = Handlebars.compile(source);
 const WeatherChat = function () {
-    let cities = [];
+    let saveToLocalStorage = function(){
+        localStorage.setItem(STORAGE_ID, JSON.stringify(cities));
+    }
+    let getFromLocalStorage = function(){
+       return JSON.parse(localStorage.getItem(STORAGE_ID)|| '[]');
+    }
+    let cities = getFromLocalStorage();
     let fetch = function (input) {
         $.ajax({
             method: "get",
@@ -25,6 +32,7 @@ const WeatherChat = function () {
         let temp = data.current.temp_c;
         let weatherbox = new WeatherBox(name, temp);
         cities.push(weatherbox);
+        saveToLocalStorage();
         // tested console.log(cities);
         render();
     }
@@ -39,14 +47,19 @@ const WeatherChat = function () {
     let postComment = function(cityID, commentText){
         // $('.city-list').empty();
         let city = _findCityById(cityID);
-        city.addComment(commentText);
+        _addComment(commentText, city);
+        saveToLocalStorage();
         render();
     }
     let deleteCity = function(deleteID){
         let index = _findDeleteIndex(deleteID);
         cities.splice(index, 1);
+        saveToLocalStorage();
         // tested console.log(cities);
         render();
+    }
+    let _addComment = function (text, city){
+        city._comments.push(new Comments(text));
     }
     let _findCityById = function(cityID){
         for(let i = 0; i < cities.length; i++){

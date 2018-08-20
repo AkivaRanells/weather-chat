@@ -1,4 +1,4 @@
-import Comments from './comment.js';
+
 
 export default class WeatherBox{
     constructor(cityName, temp){
@@ -6,9 +6,6 @@ export default class WeatherBox{
         this._cityName = cityName;
         this._temp = {tempC: temp, tempF: temp*1.8+32};
         this._comments = [];
-    }
-    addComment (text){
-        this._comments.push(new Comments(text));
     }
 }
 
