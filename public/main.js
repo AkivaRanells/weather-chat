@@ -18,19 +18,26 @@ const WeatherChat = function () {
         $.ajax({
             method: "get",
             url: 'http://api.apixu.com/v1/current.json?key=' + My_Api_Key + '&q=' + input,
-            success: function (data) {
-                _createCity(data);
-                // console.log(data.location.name, data.current.temp_c); tested
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                console.log(textStatus);
-            }
+            // success: function (data) {
+            //     _createCity(data);
+            //     // console.log(data.location.name, data.current.temp_c); tested
+            // },
+            // error: function (jqXHR, textStatus, errorThrown) {
+            //     console.log(textStatus);
+            // }
+        }).then(function(response){
+            console.log(response);
+            _createCity(response);
+        }).catch(function(error){
+            console.log(error);
         });
     };
     let _createCity = function (data) {
         let name = data.location.name;
         let temp = data.current.temp_c;
-        let weatherbox = new WeatherBox(name, temp);
+        let time = data.location.localtime;
+        console.log(time);
+        let weatherbox = new WeatherBox(name, temp, time);
         cities.push(weatherbox);
         saveToLocalStorage();
         // tested console.log(cities);

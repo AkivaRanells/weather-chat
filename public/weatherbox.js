@@ -1,11 +1,12 @@
 
 
 export default class WeatherBox{
-    constructor(cityName, temp){
+    constructor(cityName, temp, time){
         this._id = Math.random()+0.12345*1000000;
         this._cityName = cityName;
         this._temp = {tempC: temp, tempF: temp*1.8+32};
         this._comments = [];
+        this._time = time;
     }
 }
 
